@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Config>
+  <Version>1.0.0.1</Version>
+  <Remark>1.测试文件</Remark>
+  <Files>
+    <File Name="靓号二次登录1.bmp.svn-base" Version="20160819105506" Size="1974" />
+    <File Name="登录成功.bmp.svn-base" Version="20161209113124" Size="2214" />
+    <File Name="登录.bmp.svn-base" Version="20160819105506" Size="2334" />
+    <File Name="靓号二次登录.bmp.svn-base" Version="20160819105506" Size="2410" />
+    <File Name="安全验证2.bmp.svn-base" Version="20161209113122" Size="2614" />
+    <File Name="登录切换1.bmp.svn-base" Version="20160819105506" Size="2914" />
+    <File Name="靓号登录.bmp.svn-base" Version="20160819105506" Size="3078" />
+    <File Name="安全验证1.bmp.svn-base" Version="20160819105506" Size="3114" />
+    <File Name="无法登录.bmp.svn-base" Version="20160819105506" Size="3134" />
+    <File Name="登录切换.bmp.svn-base" Version="20160819105506" Size="3414" />
+    <File Name="帐号登录.bmp.svn-base" Version="20160819105506" Size="7014" />
+    <File Name="安全验证.bmp.svn-base" Version="20160819105506" Size="8902" />
+    <File Name="Thumbs.db.svn-base" Version="20170303094958" Size="12288" />
+  </Files>
+</Config>
