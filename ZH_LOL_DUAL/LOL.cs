@@ -906,6 +906,7 @@ namespace GTR
                 WriteToFile(Yzm);
                 User32API.SetForegroundWindow(m_hGameWnd);
                 KeyMouse.MouseClick(m_hGameWnd, 696 + 210, 383 + 248, 1, 1, 2000);
+
                 pb1 = ImageTool.fPic(m_strPicPath + "We验证码.bmp", 853, 356, 1063, 657, 50);
                 pa1 = ImageTool.fPic(m_strPicPath + "We验证码1.bmp", 853, 356, 1063, 657, 50);
                 pc1 = ImageTool.fPic(m_strPicPath + "We验证码2.bmp", 853, 356, 1063, 657, 50);
@@ -925,12 +926,13 @@ namespace GTR
                             return 2260;
                         }
                     }
-                    return 1;
                     if (i > 5)
-                        codeRight(1);
+                        RGcodeRight(0);                       
                     else
-                        RGcodeRight(0);
+                        codeRight(1);
+                    return 1;
                 }
+
                 if (i <= 5)
                     codeRight(0);
                 else
@@ -1165,6 +1167,7 @@ namespace GTR
             WriteToFile("等待验证码超时...");
             return "";
         }
+        //验证码
         public string AutoVerify(string ImagePath, int GameId)
         {
             if (MZH)
@@ -1179,7 +1182,8 @@ namespace GTR
             String postData = string.Format("orderNo={0}&GameId={1}&JpgBase64={2}", OrdNo, GameId, HttpUtility.UrlEncode(base64string));
             try
             {
-                strHTML = PostUrlData("http://192.168.36.245/autotalk/service.asmx/UploadJpgBase64", postData);
+                //strHTML = PostUrlData("http://192.168.36.245/autotalk/service.asmx/UploadJpgBase64", postData);
+                strHTML = PostUrlData("http://172.16.74.147/AutoTalkUpdate/WebService1.asmx/SendCardInfo", postData);
                 strHTML = MyStr.FindStr(strHTML, "\">", "<");
                 return strHTML;
             }
@@ -1494,10 +1498,11 @@ namespace GTR
         public static void codeRight(int isTrue)
         {
             string strHTML = "";
-            String postData = string.Format("orderNo={0}&IsTrue={1}", OrdNo, isTrue);
+            String postData = string.Format("orderNo={0}&type={1}", OrdNo, isTrue);
             try
             {
-                strHTML = PostUrlData("http://192.168.36.245/autotalk/service.asmx/ResultAnswer2", postData);
+                WriteToFile("发送内容:" +postData);
+                strHTML = PostUrlData("http://172.16.74.147/AutoTalkUpdate/WebService1.asmx/SendCardType", postData);
             }
             catch (Exception e)
             {
@@ -1947,7 +1952,6 @@ namespace GTR
             ptMAX.X = 0;
             return true;
         }
-        //网页认证
         private string GetTheVison(string ExeName)
         {
 
@@ -2118,8 +2122,7 @@ namespace GTR
             }
             return 3120;
         }
-
-        //取代TGP获取英雄和皮肤并且拼图，更改路径
+        ///取代TGP获取英雄和皮肤并且拼图，更改路径
         /// <summary>
         /// 获取英雄与皮肤
         /// </summary>
@@ -2208,7 +2211,7 @@ namespace GTR
                 #endregion
 
                 #region 绑定大区
-                if (WinTitle().Contains("核对密码成功") || WinTitle().Contains("裁决之镰"))
+                if (WinTitle().Contains("核对密码成功") || WinTitle().Contains("裁决之镰")||WinTitle().Contains("封号"))
                 {
                     Sleep(1000);
                     if (IsCallPone == 0)
@@ -2511,8 +2514,13 @@ namespace GTR
                 }
                 if (WinTitle().Contains("封号"))
                 {
-                    WriteToFile(WinTitle());
-                    return 7;
+                    if (WinTitle().Contains(m_strServer))
+                    {
+                        WriteToFile(WinTitle());
+                        return 7;
+                    }
+                    else
+                        return 1;
                 }
 
                 if (WinTitle().Contains("核对密码成功"))
@@ -2561,13 +2569,14 @@ namespace GTR
                 if (yzm.Length != 4)
                 {
                     KeyMouse.MouseClick(127, 274, 1, 1, 500);//点击刷新验证码
+                    codeRight(0);
                     continue;
                 }
                 WriteToFile("第" + ytimes + "次输入验证码:" + yzm);
                 KeyMouse.MouseClick(62, 228, 1, 1, 500);//点击验证码输入框
                 KeyMouse.SendBackSpaceKey(4);//删除残留验证码字母
                 KeyMouse.SendKeys(yzm, 200);
-                Sleep(1000);
+                Sleep(1500);
                 if (WinTitle().Contains("验证码错误") || WinTitle().Contains("需要验证码") || WinTitle().Contains("可能有误"))
                 {
                     WriteToFile("验证码错误");
@@ -2588,6 +2597,7 @@ namespace GTR
                 else
                     break;
             }
+            WriteToFile("验证成功");
             if (ytimes <= 5)
                 codeRight(1);
             else
@@ -2897,7 +2907,7 @@ namespace GTR
                     if (dirPath.Contains("Skin"))
                     {
                         WriteToFile("共有" + intSkin + "个皮肤图片，读取的数组长度为" + count);
-                        if ((count + 2) < intSkin)
+                        if ((count + 3) < intSkin)
                         {
                             writetime++;
                             WriteToFile("获取皮肤下载数量不匹配,等待程序下载");
